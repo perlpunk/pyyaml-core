@@ -1,0 +1,157 @@
+import yaml
+import re
+
+
+class CommonResolver(yaml.resolver.BaseResolver):
+
+    @classmethod
+    def init_resolvers(cls, key):
+        for args in _resolvers[key]:
+            cls.add_implicit_resolver(
+                'tag:yaml.org,2002:' + args[0],
+                args[1], args[2]
+            )
+
+
+class CommonConstructor(yaml.constructor.BaseConstructor):
+
+    inf_value = 1e300
+    while inf_value != inf_value*inf_value:
+        inf_value *= inf_value
+    nan_value = -inf_value/inf_value   # Trying to make a quiet NaN (like C99).
+
+    bool_values = {
+        'core': {
+            'true':     True,
+            'True':     True,
+            'TRUE':     True,
+            'false':    False,
+            'False':    False,
+            'FALSE':    False,
+        },
+    }
+
+    def construct_yaml_bool_core(self, node):
+        value = self.construct_scalar(node)
+        return self.bool_values["core"][value]
+
+    null_values = {
+        'core': {
+            '':     None,
+            '~':    None,
+            'null': None,
+            'Null': None,
+            'NULL': None,
+        },
+    }
+
+    def construct_yaml_null_core(self, node):
+        value = self.construct_scalar(node)
+        return self.null_values["core"][value]
+
+    def construct_yaml_int_core(self, node):
+        value = self.construct_scalar(node)
+        sign = +1
+        if value[0] == '-':
+            sign = -1
+        if value[0] in '+-':
+            value = value[1:]
+
+        if value == '0':
+            return 0
+        elif value.startswith('0o'):
+            return sign*int(value[2:], 8)
+        elif value.startswith('0x'):
+            return sign*int(value[2:], 16)
+        else:
+            return sign*int(value)
+
+    def construct_yaml_float_core(self, node):
+        value = self.construct_scalar(node)
+        value = value.lower()
+        sign = +1
+        if value[0] == '-':
+            sign = -1
+        if value[0] in '+-':
+            value = value[1:]
+        if value == '.inf':
+            return sign*self.inf_value
+        elif value == '.nan':
+            return self.nan_value
+        else:
+            return sign*float(value)
+
+    @classmethod
+    def init_constructors(cls, tagset):
+        if tagset not in _constructors:
+            return
+        for key in _constructors[tagset]:
+            callback = _constructors[tagset][key]
+            if (key is None):
+                cls.add_constructor(key, callback)
+            else:
+                cls.add_constructor('tag:yaml.org,2002:' + key, callback)
+
+
+class CommonLoader(yaml.BaseLoader, CommonConstructor, CommonResolver):
+
+    @classmethod
+    def init_tagset(cls, tagset):
+        cls.init_constructors(tagset)
+        cls.init_resolvers(tagset)
+
+
+class CCommonLoader(yaml.CBaseLoader, CommonConstructor, CommonResolver):
+
+    @classmethod
+    def init_tagset(cls, tagset):
+        cls.init_constructors(tagset)
+        cls.init_resolvers(tagset)
+
+
+class CoreLoader(CommonLoader):
+    pass
+
+
+class CCoreLoader(CCommonLoader):
+    pass
+
+
+_constructors = {
+    'core':  {
+        'str': yaml.constructor.SafeConstructor.construct_yaml_str,
+        'seq': yaml.constructor.SafeConstructor.construct_yaml_seq,
+        'map': yaml.constructor.SafeConstructor.construct_yaml_map,
+        None: yaml.constructor.SafeConstructor.construct_undefined,
+        'int': CommonConstructor.construct_yaml_int_core,
+        'float': CommonConstructor.construct_yaml_float_core,
+        'null': CommonConstructor.construct_yaml_null_core,
+        'bool': CommonConstructor.construct_yaml_bool_core,
+    },
+}
+
+_resolvers = {
+    'core': [
+        ['bool',
+            re.compile(r'''^(?:|true|True|TRUE|false|False|FALSE)$''', re.X),
+            list('tTfF')],
+        ['int',
+            re.compile(r'''^(?:
+                    |0o[0-7]+
+                    |[-+]?(?:[0-9]+)
+                    |0x[0-9a-fA-F]+
+                    )$''', re.X),
+            list('-+0123456789')],
+        ['float',
+            re.compile(r'''^(?:[-+]?(?:\.[0-9]+|[0-9]+(\.[0-9]*)?)(?:[eE][-+]?[0-9]+)?
+                    |[-+]?\.(?:inf|Inf|INF)
+                    |\.(?:nan|NaN|NAN))$''', re.X),
+            list('-+0123456789.')],
+        ['null',
+            re.compile(r'''^(?:~||null|Null|NULL)$''', re.X),
+            ['~', 'n', 'N', '']],
+    ],
+}
+
+CoreLoader.init_tagset('core')
+CCoreLoader.init_tagset('core')
