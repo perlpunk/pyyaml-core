@@ -63,12 +63,6 @@ types = {
     'nan':   [float, check_float],
     'bool':  [bool,  check_bool],
 }
-loaders = {
-    'core': CoreLoader,
-}
-dumpers = {
-    'core': CoreDumper,
-}
 
 
 def load_test_files(tagset):
