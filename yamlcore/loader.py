@@ -93,30 +93,6 @@ class CommonConstructor(yaml.constructor.BaseConstructor):
                 cls.add_constructor('tag:yaml.org,2002:' + key, callback)
 
 
-class CommonLoader(yaml.BaseLoader, CommonConstructor, CommonResolver):
-
-    @classmethod
-    def init_tagset(cls, tagset):
-        cls.init_constructors(tagset)
-        cls.init_resolvers(tagset)
-
-
-class CCommonLoader(yaml.CBaseLoader, CommonConstructor, CommonResolver):
-
-    @classmethod
-    def init_tagset(cls, tagset):
-        cls.init_constructors(tagset)
-        cls.init_resolvers(tagset)
-
-
-class CoreLoader(CommonLoader):
-    pass
-
-
-class CCoreLoader(CCommonLoader):
-    pass
-
-
 _constructors = {
     'core':  {
         'str': yaml.constructor.SafeConstructor.construct_yaml_str,
@@ -152,6 +128,3 @@ _resolvers = {
             ['~', 'n', 'N', '']],
     ],
 }
-
-CoreLoader.init_tagset('core')
-CCoreLoader.init_tagset('core')

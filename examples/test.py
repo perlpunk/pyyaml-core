@@ -4,8 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from yamlcore.dumper import CoreDumper, CCoreDumper
-from yamlcore.loader import CoreLoader, CCoreLoader
+from yamlcore import CoreLoader, CCoreLoader, CoreDumper, CCoreDumper
 
 
 class MyCoreLoader(CoreLoader):

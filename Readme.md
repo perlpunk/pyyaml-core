@@ -11,8 +11,8 @@ schemas](https://perlpunk.github.io/yaml-test-schema/schemas.html).
 ## Examples
 
     import yaml
-    from yamlcore.loader import CoreLoader
-    from yamlcore.dumper import CoreDumper
+    from yamlcore import CoreLoader
+    from yamlcore import CoreDumper
 
     y = """
     ---

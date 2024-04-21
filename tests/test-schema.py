@@ -2,8 +2,7 @@ import sys
 import yaml
 import math
 
-from yamlcore.loader import CoreLoader, CCoreLoader
-from yamlcore.dumper import CoreDumper, CCoreDumper
+from yamlcore import CoreLoader, CCoreLoader, CoreDumper, CCoreDumper
 
 
 def check_bool(value, expected):

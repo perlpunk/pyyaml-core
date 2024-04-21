@@ -1,5 +1,4 @@
 import yaml
-from yamlcore.loader import CommonResolver
 
 
 class CommonRepresenter(yaml.representer.BaseRepresenter):
@@ -23,30 +22,6 @@ class CommonRepresenter(yaml.representer.BaseRepresenter):
             return True
 
 
-class CommonDumper(yaml.BaseDumper, CommonRepresenter, CommonResolver):
-
-    @classmethod
-    def init_tags(cls, tagset):
-        cls.init_representers(tagset)
-        cls.init_resolvers(tagset)
-
-
-class CCommonDumper(yaml.CBaseDumper, CommonRepresenter, CommonResolver):
-
-    @classmethod
-    def init_tags(cls, tagset):
-        cls.init_representers(tagset)
-        cls.init_resolvers(tagset)
-
-
-class CoreDumper(CommonDumper):
-    pass
-
-
-class CCoreDumper(CCommonDumper):
-    pass
-
-
 _representers = {
     'core': {
         bool: yaml.representer.SafeRepresenter.represent_bool,
@@ -60,6 +35,3 @@ _representers = {
         None: yaml.representer.SafeRepresenter.represent_undefined,
     },
 }
-
-CoreDumper.init_tags('core')
-CCoreDumper.init_tags('core')
