@@ -14,12 +14,7 @@ class CommonRepresenter(yaml.representer.BaseRepresenter):
             cls.add_representer(key, callback)
 
     def ignore_aliases(self, data):
-        if data is None:
-            return True
-        if isinstance(data, tuple) and data == ():
-            return True
-        if isinstance(data, (str, bytes, bool, int, float)):
-            return True
+        return yaml.representer.SafeRepresenter.ignore_aliases(self, data)
 
 
 _representers = {
