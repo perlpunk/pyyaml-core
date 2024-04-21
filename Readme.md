@@ -1,9 +1,13 @@
 ## pyyaml-core - YAML 1.2 Core Schema Support for PyYAML
 
-This module can be used on top of PyYAML to load YAML 1.2 files.
+This module can be used on top of [PyYAML](https://github.com/yaml/pyyaml) to
+load YAML 1.2 files.
+It depends on PyYAML and inherits from it, it's not a fork.
 
 Currently it supports enabling all YAML 1.2 Core Schema tags on top
 of the PyYAML BaseLoader.
+It does not (yet) support other tags like the `<<` merge key.
+You can add custom constructors, though.
 
 For more information see the [comparison of 1.1 and 1.2
 schemas](https://perlpunk.github.io/yaml-test-schema/schemas.html).
