@@ -53,3 +53,18 @@ shall be added using the old API at this point.
 
 So as long as PyYAML doesn't merge this, you can use this module as an
 alternative.
+
+## Differences
+
+There are other differences in behaviour to PyYAML.
+
+### Duplicate keys are not allowed
+
+The YAML spec forbids duplicate keys. PyYAML allows them, which leads to
+accidentally added duplicate keys in YAML files, eventually.
+
+I can't see a good use case that people would want to allow duplicate
+keys in a typical YAML loading process.
+For the use cases I see you would want your own constructor anyway.
+
+If this is breaking anyone's use case, please let me know.
