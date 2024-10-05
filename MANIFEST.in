@@ -1,0 +1,3 @@
+include Changelog.md Readme.md LICENSE
+recursive-include examples *
+recursive-include tests *
