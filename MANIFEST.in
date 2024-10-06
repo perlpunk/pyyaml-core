@@ -1,3 +1,4 @@
 include Changelog.md Readme.md LICENSE
 recursive-include examples *
 recursive-include tests *
+global-exclude */__pycache__/*

@@ -1,3 +1,31 @@
 [build-system]
-requires = ['setuptools>=42']
+requires = ['setuptools >= 61.0']
 build-backend = 'setuptools.build_meta'
+
+[project]
+name = "yamlcore"
+version = "0.0.3"
+dependencies = [
+  "PyYAML",
+]
+requires-python = ">= 3.6"
+authors = [
+  {name = "Tina Müller", email = "cpan2@tinita.de"},
+]
+description = "YAML 1.2 Support for PyYAML"
+readme = "Readme.md"
+license = {file = "LICENSE"}
+keywords = ["yaml"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+]
+[project.urls]
+Homepage = "https://github.com/perlpunk/pyyaml-core"
+Documentation = "https://github.com/perlpunk/pyyaml-core"
+Repository = "https://github.com/perlpunk/pyyaml-core"
+Issues = "https://github.com/perlpunk/pyyaml-core/issues"
+Changelog = "https://github.com/perlpunk/pyyaml-core/blob/main/Changelog.md"
