@@ -27,6 +27,35 @@ jobs:
       run: |
         python3 -m pytest tests/test-*.py -vv
 
+  test-no-libyaml:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install PyYAML without libyaml
+      env:
+        PYYAML_FORCE_LIBYAML: "0"
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install pytest
+        python -m pip install --no-binary PyYAML --no-cache-dir --force-reinstall \
+          --config-settings=pyyaml_build_config='{"with_libyaml": 0}' \
+          'PyYAML==6.0.3'
+    - name: Verify PyYAML has no libyaml binding
+      run: |
+        python -c 'import yaml; assert not yaml.__with_libyaml__, yaml.__with_libyaml__'
+    - name: Test with pytest
+      run: |
+        python -m pytest tests/test-*.py -vv
+
   lint:
 
     runs-on: ubuntu-latest

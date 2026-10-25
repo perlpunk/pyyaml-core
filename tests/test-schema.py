@@ -2,8 +2,10 @@ import sys
 import yaml
 import math
 
-from yamlcore import CoreLoader, CCoreLoader, CoreDumper, CCoreDumper
+from yamlcore import CoreLoader, CoreDumper
 
+if yaml.__with_libyaml__:
+    from yamlcore import CCoreLoader, CCoreDumper
 
 def check_bool(value, expected):
     if expected == 'false()' and value is False:
@@ -147,5 +149,6 @@ def test_core_schema_py():
     schema_test('core', CoreLoader, CoreDumper)
 
 
-def test_core_schema_c():
-    schema_test('core', CCoreLoader, CCoreDumper)
+if yaml.__with_libyaml__:
+    def test_core_schema_c():
+        schema_test('core', CCoreLoader, CCoreDumper)
