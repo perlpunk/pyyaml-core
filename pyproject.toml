@@ -4,7 +4,7 @@ build-backend = 'setuptools.build_meta'
 
 [project]
 name = "yamlcore"
-version = "0.0.4"
+version = "0.1.0b1"
 dependencies = [
   "PyYAML",
 ]
@@ -17,7 +17,7 @@ readme = "Readme.md"
 license = {file = "LICENSE"}
 keywords = ["yaml"]
 classifiers = [
-    "Development Status :: 5 - Production/Stable",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",

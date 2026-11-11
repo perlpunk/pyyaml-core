@@ -1,5 +1,9 @@
 ## Changelog for yamlcore
 
+### 0.1.0b1 2026-11-11 16:38:41+01:00
+
+    - Allow running without libyaml
+
 ### 0.0.4 2024-10-09 19:23:10+02:00
 
   - Fix metadata (adding all test data and Changelog to the build)
