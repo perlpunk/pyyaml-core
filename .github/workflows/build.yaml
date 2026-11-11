@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [build]
+    tags: [ 'v*' ]
 
 jobs:
   build:
@@ -31,4 +31,20 @@ jobs:
       with:
         name: Release
         path: dist
+
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+      url: https://pypi.org/project/yamlcore/
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/download-artifact@v7
+      with:
+        name: Release
+        path: dist/
+    - uses: pypa/gh-action-pypi-publish@release/v1
 

@@ -1,5 +1,9 @@
 ## Changelog for yamlcore
 
+### 0.1.0b2 2026-11-11 18:37:53+01:00
+
+    - Use Trusted publishing from GitHub
+
 ### 0.1.0b1 2026-11-11 16:38:41+01:00
 
     - Allow running without libyaml
